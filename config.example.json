@@ -1,0 +1,7 @@
+{
+  "DEVICE_IP": "192.168.50.2",
+  "DEVICE_PORT": 4370,
+  "GYM_NAME": "Star Gym",
+  "CURRENCY": "دينار",
+  "BACKUP_EVERY_HOURS": 6
+}

@@ -1,0 +1,25 @@
+# بيانات حقيقية، لا تنرفع أبداً على GitHub
+gym.db
+gym.db-journal
+backups/
+app.log*
+config.json
+
+# بيئة بايثون الافتراضية (عندك اسمها Gym_System جوا مجلد المشروع)
+/Gym_System/
+venv/
+.venv/
+
+# ملفات بايثون المؤقتة
+__pycache__/
+*.pyc
+
+# ناتج بناء الـ exe
+build/
+dist/
+*.spec
+
+# ملفات الاختبار المؤقتة
+test_*.db
+test_backups/
+users_backup.json
