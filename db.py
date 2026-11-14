@@ -175,6 +175,20 @@ def set_password(scope, new_password, old_password=None):
                      (_pw_key(scope), _hash_password(new_password)))
 
 
+def admin_set_password(scope, new_password):
+    """
+    تعيين كلمة سر جديدة بدون طلب القديمة (لما حدا ينساها). بيستخدمها المالك بأداة
+    reset_passwords_gui.py بس. كلمات السر مخزنة بشكل ما بينفع يرجع منه النص الأصلي،
+    فما في طريقة "نعرفها"، بس بنقدر نستبدلها.
+    """
+    if len(new_password) < MIN_PASSWORD_LEN:
+        raise ValueError(f"كلمة السر لازم تكون {MIN_PASSWORD_LEN} أحرف أو أرقام على الأقل")
+    with db() as conn:
+        conn.execute("INSERT INTO settings (key, value) VALUES (?, ?) "
+                     "ON CONFLICT(key) DO UPDATE SET value=excluded.value",
+                     (_pw_key(scope), _hash_password(new_password)))
+
+
 def clear_password(scope):
     """مسح كلمة سر (لمن حدا ينساها). بيستخدمها reset_passwords.py بس."""
     with db() as conn:

@@ -334,6 +334,21 @@ assert m1["new_subscriptions"] == len(m1["new_members"]) and f1["renewals"] == l
 assert m1["staff"] == a1["staff"] == f1["staff"]                                           # الموظفين بكل الأحوال
 print("9l) gender-scoped report ok")
 
+# 9m) استعادة كلمة سر منسية (أداة المالك): تعيين جديدة بدون القديمة
+db.set_password("ذكر", "oldpw1")
+assert not db.check_password("ذكر", "newpw2")
+db.admin_set_password("ذكر", "newpw2")
+assert db.check_password("ذكر", "newpw2") and not db.check_password("ذكر", "oldpw1")
+db.admin_set_password("staff", "stf-new")                           # حتى لو ما كان في كلمة سر
+assert db.check_password("staff", "stf-new")
+for bad in (lambda: db.admin_set_password("ذكر", "ab"), lambda: db.admin_set_password("other", "abcd")):
+    try:
+        bad(); raise SystemExit("لازم يرفض")
+    except ValueError:
+        pass
+assert db.check_password("ذكر", "newpw2")                           # الرفض ما غيّر شي
+print("9m) owner password reset ok")
+
 # 10) ترقية قاعدة بيانات قديمة (بدون عمود gender)
 import sqlite3
 old_db = "test_old.db"
